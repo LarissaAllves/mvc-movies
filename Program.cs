@@ -1,22 +1,27 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+
 using Microsoft.Extensions.DependencyInjection;
 using MvcMovie.Data;
 using MvcMovie.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-  builder.Services.AddDbContext<MvcMovieContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext")));
-}
-else
-{
-  builder.Services.AddDbContext<MvcMovieContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionMvcMovieContext")));
-}
+// if (builder.Environment.IsDevelopment())
+// {
+//   builder.Services.AddDbContext<MvcMovieContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext")));
+// }
+// else
+// {
+//   builder.Services.AddDbContext<MvcMovieContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionMvcMovieContext")));
+// }
 
 
-builder.Services.AddDbContext<MvcMovieContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
+// builder.Services.AddDbContext<MvcMovieContext>(options =>
+//     options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
+
+builder.Services.AddDbContext<MvcMovieContext>(options => options.UseNpgsql(@"Host=ec2-44-196-174-238.compute-1.amazonaws.com;Username=vyvtjlyuzstxpj;Password=;Database=d13tdut9t03sdl"));
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -5,7 +5,7 @@ namespace MvcMovie.Models
 {
   public class Movie
   {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     public string? Title { get; set; }
 
@@ -16,10 +16,11 @@ namespace MvcMovie.Models
 
     public string? Genre { get; set; }
 
-    [Column(TypeName = "decimal(18,2")]
-
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Price { get; set; }
 
+    public int? StudioID { get; set; }
+    public Studio? Studio { get; set; }
   }
 
 }

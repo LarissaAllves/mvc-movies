@@ -35,6 +35,7 @@ namespace mvcMovie.Controllers
       {
         movies = movies.Where(x => x.Genre == movieGenre);
       }
+
       var movieGenreVM = new MovieGenreViewModel()
       {
         Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
@@ -68,7 +69,12 @@ namespace mvcMovie.Controllers
     // GET: Movies/Create
     public IActionResult Create()
     {
-      return View();
+      var movieStudioViewModel = new MovieStudioViewModel()
+      {
+        StudioSelectList = new SelectList(_context.Studio.ToList(), nameof(Studio.StudioID), nameof(Studio.Name)),
+      };
+
+      return View(movieStudioViewModel);
     }
 
     // POST: Movies/Create
@@ -76,7 +82,7 @@ namespace mvcMovie.Controllers
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+    public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,StudioID")] Movie movie)
     {
       if (ModelState.IsValid)
       {
@@ -96,11 +102,19 @@ namespace mvcMovie.Controllers
       }
 
       var movie = await _context.Movie.FindAsync(id);
+
       if (movie == null)
       {
         return NotFound();
       }
-      return View(movie);
+
+      var movieStudioView = new MovieStudioViewModel()
+      {
+        Movie = movie,
+        StudioSelectList = new SelectList(_context.Studio.ToList(), nameof(Studio.StudioID), nameof(Studio.Name), movie.StudioID)
+      };
+
+      return View(movieStudioView);
     }
 
     // POST: Movies/Edit/5
@@ -108,7 +122,7 @@ namespace mvcMovie.Controllers
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,StudioID")] Movie movie)
     {
       if (id != movie.Id)
       {
@@ -124,7 +138,7 @@ namespace mvcMovie.Controllers
         }
         catch (DbUpdateConcurrencyException)
         {
-          if (!MovieExists(movie.Id))
+          if (!MovieExists((int)movie.Id))
           {
             return NotFound();
           }

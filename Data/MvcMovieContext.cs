@@ -16,6 +16,7 @@ namespace MvcMovie.Data
     }
 
     public DbSet<MvcMovie.Models.Movie> Movie { get; set; }
+    public DbSet<MvcMovie.Models.Studio> Studio { get; set; }
   }
 
 }
