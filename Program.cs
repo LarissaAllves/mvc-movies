@@ -20,7 +20,9 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddDbContext<MvcMovieContext>(options =>
 //     options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
 
-builder.Services.AddDbContext<MvcMovieContext>(options => options.UseNpgsql(@"Host=ec2-44-196-174-238.compute-1.amazonaws.com;Username=vyvtjlyuzstxpj;Password=;Database=d13tdut9t03sdl"));
+
+
+builder.Services.AddDbContext<MvcMovieContext>(options => options.UseNpgsql(@"Host=ec2-44-196-174-238.compute-1.amazonaws.com;Username=vyvtjlyuzstxpj;Password=aca150ac0f1a9aac08def8eb01dc4e0ac8c1db6b435fe9ee1eb060796650b77d;Database=d13tdut9t03sdl"));
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Add services to the container.
